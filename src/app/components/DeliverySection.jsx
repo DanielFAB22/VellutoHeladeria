@@ -3,32 +3,49 @@ import styled from "styled-components";
 
 
 const DeliverySectionWrapper = styled.section`
-  border-top: 2px solid black;
-  background-color: white;
-  padding: 4rem 0;
-  width: 100%;
+  background: white;
+  padding: 6rem 0;
 `;
 
 const Container = styled.div`
-  max-width: 600px; 
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
 `;
 
-const SectionHeader = styled.div`
-  border: 2px solid black;
-  background-color: #f3f4f6;
-  padding: 0.75rem 1rem;
-  margin-bottom: 2.5rem;
-  text-align: center;
 
-  h2 {
-    font-weight: 700;
-    margin: 0;
-    color: #000;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
+const LeftContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+`;
+
+const Eyebrow = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+`;
+
+const Title = styled.h2`
+  font-size: 3rem;
+  line-height: 1.1;
+  font-family: ${({ theme }) => theme.fonts.title};
+`;
+
+const Text = styled.p`
+  color: ${({ theme }) => theme.colors.dark};
+  line-height: 1.7;
+`;
+
+const Benefit = styled.div`
+  color: ${({ theme }) => theme.colors.text};
+  font-weight: 500;
 `;
 
 const ContentStack = styled.div`
@@ -58,116 +75,103 @@ const InfoCard = styled.div`
 `;
 
 const FormContainer = styled.div`
-  border: 2px solid black;
-  padding: 2.5rem;
-  background-color: #ffffff;
-  margin-top: 1rem;
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: ${({ theme }) => theme.shadow.soft};
 
   h3 {
-    font-weight: 700;
-    margin-bottom: 2rem;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
   }
 `;
 
 const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 
   label {
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
   }
 
   input, textarea {
-    border: 2px solid black;
-    padding: 0.8rem;
-    font-size: 0.9rem;
-    outline: none;
-    background: white;
     width: 100%;
-    box-sizing: border-box;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    border-radius: ${({ theme }) => theme.radius.md};
+    padding: 0.9rem;
+    background: white;
+    outline: none;
 
     &:focus {
-      background-color: #f9fafb;
+      border-color: ${({ theme }) => theme.colors.primary};
     }
   }
 `;
 
 const SubmitButton = styled.button`
-  border: 2px solid black;
-  border-radius: 0; 
-  padding: 1rem;
-  background-color: black;
-  color: white;
-  font-weight: 700;
-  text-transform: uppercase;
   width: 100%;
+  border: none;
+  padding: 1rem;
+  border-radius: ${({ theme }) => theme.radius.md};
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
 
   &:hover {
-    background-color: #333;
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+    background: ${({ theme }) => theme.colors.dark};
   }
 `;
-
 // --- Componente ---
 
 export function DeliverySection() {
   return (
     <DeliverySectionWrapper>
       <Container>
-        <SectionHeader>
-          <h2>Servicio a Domicilio</h2>
-        </SectionHeader>
 
-        <ContentStack>
-          {/* Información apilada y centrada */}
-          <InfoCard>
-            <h3>Entrega Rápida</h3>
-            <p>Menos de 30 min en zona de cobertura.</p>
-          </InfoCard>
+        <LeftContent>
+          <Eyebrow>Domicilio</Eyebrow>
 
-          <InfoCard>
-            <h3>Horarios</h3>
-            <p>Lunes a Domingo: 10:00 AM - 10:00 PM.</p>
-          </InfoCard>
+          <Title>
+            Tu helado favorito, directo a casa
+          </Title>
 
-          <InfoCard>
-            <h3>Cobertura</h3>
-            <p>Toda la ciudad y alrededores.</p>
-          </InfoCard>
+          <Text>
+            Entregamos rápido para que disfrutes cada sabor con la textura perfecta.
+          </Text>
 
-          
-          <FormContainer>
-            <h3>Solicita tu Pedido</h3>
-            <form>
-              <FormGroup>
-                <label>Dirección</label>
-                <input type="text" placeholder="Calle, número, ciudad" required />
-              </FormGroup>
+          <Benefit>✓ Menos de 30 minutos</Benefit>
+          <Benefit>✓ Cobertura en toda la ciudad</Benefit>
+          <Benefit>✓ Atención todos los días</Benefit>
+        </LeftContent>
 
-              <FormGroup>
-                <label>Teléfono</label>
-                <input type="tel" placeholder="(123) 456-7890" required />
-              </FormGroup>
+        <FormContainer>
+          <h3>Solicita tu pedido</h3>
 
-              <FormGroup>
-                <label>Notas</label>
-                <textarea placeholder="Instrucciones adicionales..." rows={2} />
-              </FormGroup>
+          <form>
+            <FormGroup>
+              <label>Dirección</label>
+              <input type="text" />
+            </FormGroup>
 
-              <SubmitButton type="button">Solicitar Domicilio</SubmitButton>
-            </form>
-          </FormContainer>
-        </ContentStack>
+            <FormGroup>
+              <label>Teléfono</label>
+              <input type="text" />
+            </FormGroup>
+
+            <FormGroup>
+              <label>Notas</label>
+              <textarea rows="3" />
+            </FormGroup>
+
+            <SubmitButton>
+              Pedir ahora
+            </SubmitButton>
+          </form>
+        </FormContainer>
+
       </Container>
     </DeliverySectionWrapper>
   );

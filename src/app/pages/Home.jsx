@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Hero } from "../components/Hero";
 import { FlavorCard } from "../components/FlavorCard";
 import { DeliverySection } from "../components/DeliverySection";
-import { TrackOrder } from "../components/TrackOrder";
 
 
 
@@ -13,45 +12,56 @@ const MainContent = styled.div`
 `;
 
 const SectionHeader = styled.div`
-  border: 2px solid black;
-  padding: 0.75rem 1rem;
-  background-color: #f3f4f6; 
-  text-align: center; 
-  margin-bottom: 1.5rem;
+  text-align: center;
+  margin-bottom: 3rem;
 
   h2 {
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0;
+    font-family: ${({ theme }) => theme.fonts.title};
+    font-size: 2.6rem;
+    margin-bottom: 0.8rem;
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  p {
+    color: ${({ theme }) => theme.colors.dark};
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
   }
 `;
 
 const WhyUsGrid = styled.div`
   display: grid;
-  grid-template-cols: 1fr;
-  gap: 1rem;
-  margin-top: 1rem;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
 
   @media (min-width: 768px) {
-    grid-template-cols: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 
 const InfoCard = styled.div`
-  border: 2px solid black;
-  padding: 1.5rem;
-  background-color: white;
+  background: white;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 22px;
+  padding: 2rem;
   text-align: center;
+  box-shadow: ${({ theme }) => theme.shadow.soft};
+  transition: 0.25s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+  }
 
   h3 {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #1f2937;
+    font-size: 1.2rem;
+    margin-bottom: 0.7rem;
+    color: ${({ theme }) => theme.colors.text};
   }
 
   p {
-    font-size: 0.875rem;
-    color: #374151;
+    color: ${({ theme }) => theme.colors.dark};
+    line-height: 1.7;
     margin: 0;
   }
 `;
@@ -68,9 +78,12 @@ const flavors = [
 
 export function Home() {
   return (
+    <>
+    <Hero/>
+
     <MainContent>
       
-      <Hero />
+      
       
       
       <div className="mt-8" style={{ marginTop: '2rem' }}>
@@ -100,31 +113,42 @@ export function Home() {
       </div>
       
       
-      <div style={{ marginTop: '3rem' }}>
-        <TrackOrder />
-      </div>
-      
      
-      <div style={{ marginTop: '3rem', borderTop: '2px solid black', paddingTop: '3rem' }}>
+      <div style={{ marginTop: '5rem', paddingTop: '2rem' }}>
         <SectionHeader>
-          <h2>¿Por qué elegirnos?</h2>
+          <h2>¿Por qué elegir Velluto?</h2>
+
+          <p>
+            Creamos helados con ingredientes reales, recetas cuidadas y sabores diseñados para convertirse en recuerdos.
+          </p>
         </SectionHeader>
-        
+
         <WhyUsGrid>
+
           <InfoCard>
             <h3>Ingredientes Naturales</h3>
-            <p>Solo utilizamos ingredientes frescos y de la más alta calidad.</p>
+            <p>
+              Seleccionamos materias primas frescas para lograr sabor auténtico y textura superior.
+            </p>
           </InfoCard>
+
           <InfoCard>
             <h3>Recetas Artesanales</h3>
-            <p>Cada lote se prepara a mano siguiendo recetas tradicionales.</p>
+            <p>
+              Cada lote se prepara con atención al detalle y procesos que priorizan calidad.
+            </p>
           </InfoCard>
+
           <InfoCard>
-            <h3>Sabores Únicos</h3>
-            <p>Combinaciones innovadoras que no encontrarás en otro lugar.</p>
+            <h3>Sabores Memorables</h3>
+            <p>
+              Combinaciones clásicas y creativas pensadas para sorprender en cada cucharada.
+            </p>
           </InfoCard>
+
         </WhyUsGrid>
       </div>
     </MainContent>
+    </>
   );
 }

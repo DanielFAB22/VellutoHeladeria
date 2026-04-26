@@ -1,28 +1,80 @@
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import {
+  faInstagram,
+  faFacebookF,
+  faTiktok,
+  faXTwitter
+} from '@fortawesome/free-brands-svg-icons';
+
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 
 
 const FooterContainer = styled.footer`
-  border-top: 2px solid black;
-  background-color: white;
-  width: 100%;
-  margin-top: 2rem;
+  background: ${({ theme }) => theme.colors.dark};
+  color: white;
+  margin-top: 4rem;
+`;
+const FooterWrapper = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
 `;
 
-const FooterWrapper = styled.div`
+const Brand = styled.div`
+  h2 {
+    font-family: ${({ theme }) => theme.fonts.title};
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+  }
+`;
+
+const Contact = styled.div`
+  p {
+    margin: 0.6rem 0;
+    color: rgba(255,255,255,0.82);
+  }
+`;
+
+const SocialContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  gap: 0.8rem;
+`;
+
+const SocialIcon = styled.a`
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1.5rem;
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
 
-  @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: space-between;
+  color: white;
+  transition: 0.25s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary};
+    transform: translateY(-3px);
   }
+`;
+
+const BottomBar = styled.div`
+  border-top: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  padding: 1.3rem;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.9rem;
 `;
 
 const Copyright = styled.p`
@@ -47,66 +99,60 @@ const WhatsappBox = styled.div`
   }
 `;
 
-const SocialContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const SocialIcon = styled.a`
-  width: 40px;
-  height: 40px;
-  border: 2px solid black;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: black;
-  font-size: 0.75rem;
-  font-weight: bold;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: black;
-    color: white;
-    transform: translateY(-2px);
-  }
-`;
-
 // --- Componente Footer ---
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <FooterContainer>
-      <FooterWrapper>
-    
-        <Copyright>
-          © {currentYear} Sabores Inc. Todos los derechos reservados.
-        </Copyright>
+  <FooterContainer>
 
-        
-        <WhatsappBox>
-          WhatsApp: <span>+57 300 123 4567</span>
-        </WhatsappBox>
+    <FooterWrapper>
 
-        
+      <Brand>
+        <h2>Velluto</h2>
+        <p>
+          Helados artesanales creados con ingredientes reales y momentos para recordar.
+        </p>
+      </Brand>
+
+      <Contact>
+        <p>
+          <FontAwesomeIcon icon={faPhone} /> +57 300 123 4567
+        </p>
+
+        <p>Neiva, Colombia</p>
+        <p>Lunes a Domingo · 10AM - 10PM</p>
+      </Contact>
+
+      <div>
+        <h3>Síguenos</h3>
+
         <SocialContainer>
-          <SocialIcon href="#" target="_blank" rel="noopener noreferrer">
-            FB
+          <SocialIcon href="#">
+            <FontAwesomeIcon icon={faInstagram} />
           </SocialIcon>
-          <SocialIcon href="#" target="_blank" rel="noopener noreferrer">
-            IG
+
+          <SocialIcon href="#">
+            <FontAwesomeIcon icon={faFacebookF} />
           </SocialIcon>
-          <SocialIcon href="#" target="_blank" rel="noopener noreferrer">
-            TW
+
+          <SocialIcon href="#">
+            <FontAwesomeIcon icon={faXTwitter} />
           </SocialIcon>
-          <SocialIcon href="#" target="_blank" rel="noopener noreferrer">
-            TT
+
+          <SocialIcon href="#">
+            <FontAwesomeIcon icon={faTiktok} />
           </SocialIcon>
         </SocialContainer>
-      </FooterWrapper>
-    </FooterContainer>
-  );
+      </div>
+
+    </FooterWrapper>
+
+    <BottomBar>
+      © {currentYear} Velluto. Todos los derechos reservados.
+    </BottomBar>
+
+  </FooterContainer>
+);
 }

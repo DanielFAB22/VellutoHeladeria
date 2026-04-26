@@ -2,11 +2,20 @@ import styled from "styled-components";
 
 
 const CardContainer = styled.div`
-  border: 2px solid black;
+  background: white;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 24px;
   padding: 1rem;
-  background-color: white;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+
+  transition: 0.25s ease;
+  box-shadow: ${({ theme }) => theme.shadow.soft};
+
+  &:hover {
+    transform: translateY(-6px);
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -15,39 +24,38 @@ const ContentWrapper = styled.div`
 `;
 
 const ImagePlaceholder = styled.div`
-  width: 8rem; /
-  height: 8rem; 
-  border: 2px solid black;
-  flex-shrink: 0;
-  position: relative;
-  background-color: white;
+  width: 100%;
+  height: 220px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    #f5e8da,
+    #ead7c1
+  );
 
-  svg {
-    width: 100%;
-    height: 100%;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const InfoWrapper = styled.div`
-  flex: 1;
 
+const InfoWrapper = styled.div`
   h3 {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-    color: #1f2937;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+    color: ${({ theme }) => theme.colors.text};
   }
 
   .price {
-    font-size: 0.875rem;
-    color: #4b5563; 
-    margin-bottom: 0.25rem;
+    color: ${({ theme }) => theme.colors.primary};
+    font-weight: 700;
+    margin-bottom: 0.6rem;
   }
 
   .description {
-    font-size: 0.875rem;
-    color: #374151; 
-    line-height: 1.25rem;
+    color: ${({ theme }) => theme.colors.dark};
+    line-height: 1.6;
+    font-size: 0.95rem;
   }
 `;
 
@@ -58,51 +66,38 @@ const ActionWrapper = styled.div`
 `;
 
 const OrderButton = styled.button`
-  border: 2px solid black;
-  border-radius: 9999px;
-  padding: 0.25rem 1.5rem;
-  background-color: white;
-  font-size: 0.875rem;
-  font-weight: 500;
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: ${({ theme }) => theme.radius.md};
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: 0.2s ease;
 
   &:hover {
-    background-color: #f9fafb;
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
+    background: ${({ theme }) => theme.colors.dark};
   }
 `;
 
 
-
 export function FlavorCard({ name, description, price }) {
   return (
-    <CardContainer>
-      <ContentWrapper>
-        
-        <ImagePlaceholder>
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-            <line x1="0" y1="0" x2="100" y2="100" stroke="black" strokeWidth="1" />
-            <line x1="100" y1="0" x2="0" y2="100" stroke="black" strokeWidth="1" />
-          </svg>
-        </ImagePlaceholder>
-        
-        <InfoWrapper>
-          <h3>{name}</h3>
-          <p className="price">{price}</p>
-          <p className="description">{description}</p>
-        </InfoWrapper>
-      </ContentWrapper>
-      
-      <ActionWrapper>
-        <OrderButton>
-          Ordenar »
-        </OrderButton>
-      </ActionWrapper>
-    </CardContainer>
-  );
+  <CardContainer>
+
+    <ImagePlaceholder>🍨</ImagePlaceholder>
+
+    <InfoWrapper>
+      <h3>{name}</h3>
+      <p className="price">{price}</p>
+      <p className="description">{description}</p>
+    </InfoWrapper>
+
+    <OrderButton>
+      Ordenar ahora
+    </OrderButton>
+
+  </CardContainer>
+);
 }

@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
+import { ThemeProvider } from "styled-components";
+import theme from "./theme";
 
 
 import { Header } from "./components/Header";
@@ -15,11 +17,25 @@ import { Domicilio } from "./pages/Domicilio";
 
 // --- Estilos Globales ---
 const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif; 
-    background-color: white;
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  body{
+    font-family:${({ theme }) => theme.fonts.body};
+    background:${({ theme }) => theme.colors.background};
+    color:${({ theme }) => theme.colors.text};
+  }
+
+  a{
+    text-decoration:none;
+    color:inherit;
+  }
+
+  button,input{
+    font-family:inherit;
   }
 `;
 
@@ -35,33 +51,35 @@ const MainContent = styled.main`
 
 export default function App() {
   return (
-    <Router>
-      <GlobalStyle />
-      <AppContainer>
-        
-        <Header />
-        
-        <MainContent>
-          <Routes>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <GlobalStyle />
+        <AppContainer>
           
-            <Route path="/" element={<Home />} />
-            
-            {/* Ruta Nosotros */}
-            <Route path="/nosotros" element={<Nosotros />} />
-            <Route path="/contacto" element={<Contacto />} />
-            <Route path="/sabores" element={<Sabores />} />
-            <Route path="/domicilio" element={<Domicilio />} />
-
+          <Header />
           
+          <MainContent>
+            <Routes>
             
-            
-            <Route path="*" element={<div style={{padding: '50px', textAlign: 'center'}}>Página no encontrada</div>} />
-          </Routes>
-        </MainContent>
+              <Route path="/" element={<Home />} />
+              
+              {/* Ruta Nosotros */}
+              <Route path="/nosotros" element={<Nosotros />} />
+              <Route path="/contacto" element={<Contacto />} />
+              <Route path="/sabores" element={<Sabores />} />
+              <Route path="/domicilio" element={<Domicilio />} />
 
-       
-        <Footer />
-      </AppContainer>
-    </Router>
+            
+              
+              
+              <Route path="*" element={<div style={{padding: '50px', textAlign: 'center'}}>Página no encontrada</div>} />
+            </Routes>
+          </MainContent>
+
+        
+          <Footer />
+        </AppContainer>
+      </Router>
+    </ThemeProvider>
   );
 }
