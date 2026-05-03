@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import heladero from '../../assets/heladero.jpg';
+import heladero from '../../assets/nosotros/heladero.jpg';
 
 const MainContent = styled.div`
   max-width: 1200px;

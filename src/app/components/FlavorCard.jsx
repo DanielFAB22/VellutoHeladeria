@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useNavigate } from "react-router-dom"; // Importamos para la navegación
 
 const CardContainer = styled.div`
   background: white;
@@ -9,7 +9,6 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
   transition: 0.25s ease;
   box-shadow: ${({ theme }) => theme.shadow.soft};
 
@@ -18,26 +17,24 @@ const CardContainer = styled.div`
   }
 `;
 
-const ContentWrapper = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const ImagePlaceholder = styled.div`
+const ImageWrapper = styled.div`
   width: 100%;
   height: 220px;
   border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    #f5e8da,
-    #ead7c1
-  );
+  overflow: hidden; 
+  background: #f5f5f5; 
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
 `;
-
 
 const InfoWrapper = styled.div`
   h3 {
@@ -56,13 +53,8 @@ const InfoWrapper = styled.div`
     color: ${({ theme }) => theme.colors.dark};
     line-height: 1.6;
     font-size: 0.95rem;
+    min-height: 3em; 
   }
-`;
-
-const ActionWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
 `;
 
 const OrderButton = styled.button`
@@ -81,23 +73,36 @@ const OrderButton = styled.button`
   }
 `;
 
+export function FlavorCard({ name, description, price, image }) {
+  const navigate = useNavigate();
 
-export function FlavorCard({ name, description, price }) {
+  const handleOrder = () => {
+    // Redirige a /ordenar y envía los datos del sabor seleccionado
+    navigate("/ordenar", { 
+      state: { 
+        flavorName: name, 
+        flavorPrice: price, 
+        flavorImage: image 
+      } 
+    });
+  };
+
   return (
-  <CardContainer>
+    <CardContainer>
+      <ImageWrapper>
+        <img src={image || "/sabores/default.png"} alt={name} />
+      </ImageWrapper>
 
-    <ImagePlaceholder>🍨</ImagePlaceholder>
+      <InfoWrapper>
+        <h3>{name}</h3>
+        <p className="price">{price}</p>
+        <p className="description">{description}</p>
+      </InfoWrapper>
 
-    <InfoWrapper>
-      <h3>{name}</h3>
-      <p className="price">{price}</p>
-      <p className="description">{description}</p>
-    </InfoWrapper>
-
-    <OrderButton>
-      Ordenar ahora
-    </OrderButton>
-
-  </CardContainer>
-);
+      {/* Agregamos el evento onClick al botón */}
+      <OrderButton onClick={handleOrder}>
+        Ordenar ahora
+      </OrderButton>
+    </CardContainer>
+  );
 }

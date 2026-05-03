@@ -14,6 +14,7 @@ import { Nosotros } from "./pages/Nosotros";
 import { Contacto } from "./pages/Contacto";
 import { Sabores } from "./pages/Sabores";
 import { Domicilio } from "./pages/Domicilio";
+import { Ordenar } from "./pages/Ordenar";
 
 const GlobalStyle = createGlobalStyle`
   *{ margin:0; padding:0; box-sizing:border-box; }
@@ -65,6 +66,7 @@ export default function App() {
                 <Route path="/contacto" element={<Contacto />} />
                 <Route path="/sabores" element={<Sabores />} />
                 <Route path="/domicilio" element={<Domicilio />} />
+                <Route path="/ordenar" element={<Ordenar />} />
                 <Route path="*" element={<div style={{padding: '50px', textAlign: 'center'}}>Página no encontrada</div>} />
               </Routes>
             </PageWrapper>

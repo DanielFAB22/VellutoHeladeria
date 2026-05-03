@@ -1,8 +1,72 @@
 import React from "react";
 import styled from "styled-components";
 
-// IMPORTA TU IMAGEN DE FONDO
-import imgContacto from "../../assets/comiendohelado.jpg"; 
+
+import imgContacto from "../../assets/contacto/comiendohelado.jpg"; 
+
+const RadioSection = styled.div`
+  margin-bottom: 1.5rem;
+  
+  label.main-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+    display: block;
+    padding-left: 0.5rem;
+  }
+`;
+
+const RadioGroupContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.5rem;
+`;
+
+const RadioOption = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: 0.2s;
+
+  input {
+    appearance: none; // Ocultamos el radio default
+    width: 18px;
+    height: 18px;
+    border: 2px solid white;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+
+    &:checked {
+      border-color: ${({ theme }) => theme.colors.primary};
+      background: rgba(255, 255, 255, 0.2);
+      
+      &::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background-color: ${({ theme }) => theme.colors.primary};
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
 
 const ContactHero = styled.section`
   width: 100%;
@@ -127,7 +191,7 @@ export function Contacto() {
       <FormContainer>
         <SectionHeader>
           <h1>Contacto</h1>
-          <p>Envíanos un mensaje y te responderemos pronto</p>
+          <p>¿En qué podemos ayudarte hoy?</p>
         </SectionHeader>
 
         <form onSubmit={(e) => e.preventDefault()}>
@@ -136,6 +200,26 @@ export function Contacto() {
             <input type="text" placeholder="Ej: Juan Pérez" required />
           </FormGroup>
 
+          {/* --- NUEVO RADIO GROUP --- */}
+          <RadioSection>
+            <label className="main-label">Motivo del contacto</label>
+            <RadioGroupContainer>
+              <RadioOption>
+                <input type="radio" name="motivo" value="pedido" defaultChecked />
+                Pedido
+              </RadioOption>
+              <RadioOption>
+                <input type="radio" name="motivo" value="franquicia" />
+                Franquicia
+              </RadioOption>
+              <RadioOption>
+                <input type="radio" name="motivo" value="sugerencia" />
+                Sugerencia
+              </RadioOption>
+            </RadioGroupContainer>
+          </RadioSection>
+         
+
           <FormGroup>
             <label>Correo Electrónico</label>
             <input type="email" placeholder="tu@email.com" required />
@@ -143,11 +227,7 @@ export function Contacto() {
 
           <FormGroup>
             <label>Mensaje</label>
-            <textarea 
-              placeholder="¿Qué tienes en mente?" 
-              rows={4} 
-              required 
-            />
+            <textarea placeholder="Cuéntanos más..." rows={3} required />
           </FormGroup>
 
           <SendButton type="submit">Enviar Mensaje</SendButton>

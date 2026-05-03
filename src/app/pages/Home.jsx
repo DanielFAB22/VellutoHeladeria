@@ -2,17 +2,19 @@ import styled from "styled-components";
 import { Hero } from "../components/Hero";
 import { FlavorCard } from "../components/FlavorCard";
 import { DeliverySection } from "../components/DeliverySection";
+import { SABORES } from "../../data/sabores.js";
 
-// Swiper
+
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper/modules';
+import { Pagination, Autoplay, Navigation } from 'swiper/modules'; // Añadimos Navigation
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
-// Importación de imágenes locales
-import imgNatural from "../../assets/vanilla.jpg";
-import imgArtesanal from "../../assets/vanilla2.jpg";
-import imgSabores from "../../assets/helados1.jpg";
+
+import imgNatural from "../../assets/porqueelegirnos/vanilla.jpg";
+import imgArtesanal from "../../assets/porqueelegirnos/vanilla2.jpg";
+import imgSabores from "../../assets/porqueelegirnos/helados1.jpg";
 
 const MainContent = styled.div`
   padding: 1rem;
@@ -64,7 +66,6 @@ const InfoCard = styled.div`
   transition: 0.3s ease;
   border: 1px solid ${({ theme }) => theme.colors.border};
 
-  // Imagen de fondo con overlay para lectura
   background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), 
     url(${props => props.$bgImage});
   background-size: cover;
@@ -94,43 +95,44 @@ const InfoCard = styled.div`
   }
 `;
 
-const flavors = [
-  { id: 1, name: "Fresa Suprema", description: "Cremoso helado de fresa natural con trozos de fruta fresca", price: "$4.50" },
-  { id: 2, name: "Chocolate Intenso", description: "Chocolate belga premium con un sabor rico y profundo", price: "$4.50" },
-  { id: 3, name: "Vainilla Clásica", description: "Hecho con vainas de vainilla auténtica de Madagascar", price: "$4.00" },
-  { id: 4, name: "Menta Fresca", description: "Refrescante menta con chips de chocolate oscuro", price: "$4.50" },
-  { id: 5, name: "Pistacho Real", description: "Pistachos tostados directamente desde Bronte, Italia", price: "$5.00" }
-];
-
 export function Home() {
+  // Tomamos los primeros 6 para que el carrusel tenga contenido suficiente para rotar
+  const destacados = SABORES.slice(0, 6);
+
   return (
     <>
       <Hero />
       <MainContent>
-        {/* SECCIÓN CARRUSEL */}
         <div style={{ marginTop: '3rem' }}>
           <SectionHeader>
             <h2>Sabores Destacados</h2>
+            <p>Nuestros favoritos de la temporada, listos para refrescar tu día.</p>
           </SectionHeader>
           
           <Swiper
-            modules={[Pagination, Autoplay]}
-            spaceBetween={20}
+            modules={[Pagination, Autoplay, Navigation]}
+            spaceBetween={30}
             slidesPerView={1}
-            autoplay={{ delay: 3500, disableOnInteraction: false }}
+            loop={true} // <--- HACE QUE SEA INFINITO
+            autoplay={{ 
+              delay: 3000, 
+              disableOnInteraction: false 
+            }}
             pagination={{ clickable: true }}
+            navigation={true} // <--- FLECHAS PARA NAVEGAR
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
             }}
-            style={{ paddingBottom: '3rem' }}
+            style={{ padding: '0 1rem 4rem 1rem' }}
           >
-            {flavors.map((flavor) => (
+            {destacados.map((flavor) => (
               <SwiperSlide key={flavor.id}>
                 <FlavorCard
                   name={flavor.name}
                   description={flavor.description}
-                  price={flavor.price}
+                  price={`$${flavor.price.toFixed(2)}`}
+                  image={flavor.image} 
                 />
               </SwiperSlide>
             ))}
@@ -142,7 +144,7 @@ export function Home() {
         </div>
         
         {/* SECCIÓN POR QUÉ ELEGIRNOS */}
-        <div style={{ marginTop: '3rem', marginBottom: '4rem' }}>
+        <div style={{ marginTop: '3.5rem', marginBottom: '4rem' }}>
           <SectionHeader>
             <h2>¿Por qué elegir Velluto?</h2>
             <p>Creamos helados con ingredientes reales y recetas cuidadas.</p>

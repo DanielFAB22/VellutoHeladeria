@@ -86,7 +86,7 @@ export function Header() {
           
         </Nav>
 
-        <SpecialLink to="/carrito">Ordernar</SpecialLink>
+        <SpecialLink to="/ordenar">Ordernar</SpecialLink>
       </Wrapper>
     </HeaderContainer>
   );
