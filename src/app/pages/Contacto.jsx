@@ -1,62 +1,56 @@
+import React from "react";
 import styled from "styled-components";
 
+// IMPORTA TU IMAGEN DE FONDO
+import imgContacto from "../../assets/comiendohelado.jpg"; 
 
-
-const PageWrapper = styled.div`
+const ContactHero = styled.section`
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 4rem 1rem;
-  max-width: 600px; 
-  margin: 0 auto;
+  
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+    url(${props => props.$bgImage});
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+`;
+
+const FormContainer = styled.div`
+  /* EFECTO TRANSPARENTE (Glassmorphism) */
+  background: rgba(255, 255, 255, 0.15); // Blanco muy transparente
+  backdrop-filter: blur(15px); // Desenfoque del fondo
+  -webkit-backdrop-filter: blur(15px);
+  
+  width: 100%;
+  max-width: 500px;
+  padding: 3rem;
+  border-radius: 30px;
+  
+  /* Borde sutil para definir la forma sobre el fondo */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 `;
 
 const SectionHeader = styled.div`
-  border: 2px solid black;
-  padding: 0.75rem 1rem;
-  background-color: #f3f4f6;
-  margin-bottom: 2rem;
   text-align: center;
+  margin-bottom: 2rem;
 
   h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-    text-transform: uppercase;
+    font-family: ${({ theme }) => theme.fonts.title};
+    font-size: 2.8rem;
+    color: white; // Texto blanco para que resalte sobre el cristal
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
-`;
-
-const ContactGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const InfoBox = styled.div`
-  border: 2px solid black;
-  padding: 1.5rem;
-  background-color: white;
-  text-align: center;
 
   p {
-    margin: 0.5rem 0;
-    font-weight: 500;
-  }
-
-  span {
-    font-weight: 700;
-    color: #2563eb;
-  }
-`;
-
-const FormBox = styled.div`
-  border: 2px solid black;
-  padding: 2rem;
-  background-color: white;
-
-  h2 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
+    color: white;
+    font-size: 1rem;
+    opacity: 0.9;
   }
 `;
 
@@ -64,85 +58,106 @@ const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
 
   label {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
+    color: white;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-left: 0.5rem;
   }
 
   input, textarea {
-    border: 2px solid black;
-    padding: 0.8rem;
-    font-size: 0.9rem;
+    /* Inputs también semi-transparentes */
+    background: rgba(255, 255, 255, 0.9); 
+    border: 1px solid transparent;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 15px;
     outline: none;
+    transition: 0.3s ease;
     width: 100%;
-    box-sizing: border-box;
 
     &:focus {
-      background-color: #f9fafb;
+      background: white;
+      border-color: ${({ theme }) => theme.colors.primary};
+      transform: scale(1.01);
     }
   }
 `;
 
 const SendButton = styled.button`
-  border: 2px solid black;
-  width: 100%;
-  padding: 1rem;
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.primary || '#e67e22'};
   color: white;
+  width: 100%;
+  padding: 1.2rem;
+  border: none;
+  border-radius: 15px;
   font-weight: 700;
+  font-size: 1rem;
   text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: 0.3s ease;
+  margin-top: 1rem;
 
   &:hover {
-    background-color: #333;
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0px black;
+    filter: brightness(1.1);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   }
 `;
 
+const ContactInfo = styled.div`
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  color: white;
 
+  p { margin: 0.3rem 0; }
+  span { font-weight: 700; }
+`;
 
 export function Contacto() {
   return (
-    <PageWrapper>
-      <SectionHeader>
-        <h1>Contacto</h1>
-      </SectionHeader>
+    <ContactHero $bgImage={imgContacto}>
+      <FormContainer>
+        <SectionHeader>
+          <h1>Contacto</h1>
+          <p>Envíanos un mensaje y te responderemos pronto</p>
+        </SectionHeader>
 
-      <ContactGrid>
-       
-        <InfoBox>
-          <p>Email: <span>hola@sabores.com</span></p>
-          <p>Teléfono: <span>+57 300 888 9999</span></p>
-        </InfoBox>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <FormGroup>
+            <label>Nombre Completo</label>
+            <input type="text" placeholder="Ej: Juan Pérez" required />
+          </FormGroup>
 
-        
-        <FormBox>
-          <h2>Escríbenos</h2>
-          <form>
-            <FormGroup>
-              <label>Nombre Completo</label>
-              <input type="text" placeholder="Tu nombre..." required />
-            </FormGroup>
+          <FormGroup>
+            <label>Correo Electrónico</label>
+            <input type="email" placeholder="tu@email.com" required />
+          </FormGroup>
 
-            <FormGroup>
-              <label>Correo Electrónico</label>
-              <input type="email" placeholder="tu@email.com" required />
-            </FormGroup>
+          <FormGroup>
+            <label>Mensaje</label>
+            <textarea 
+              placeholder="¿Qué tienes en mente?" 
+              rows={4} 
+              required 
+            />
+          </FormGroup>
 
-            <FormGroup>
-              <label>Mensaje</label>
-              <textarea placeholder="¿En qué podemos ayudarte?" rows={4} required />
-            </FormGroup>
+          <SendButton type="submit">Enviar Mensaje</SendButton>
+        </form>
 
-            <SendButton type="button">Enviar Mensaje</SendButton>
-          </form>
-        </FormBox>
-      </ContactGrid>
-    </PageWrapper>
+        <ContactInfo>
+          <p>Email: <span>hola@velluto.com</span></p>
+          <p>WhatsApp: <span>+57 300 888 9999</span></p>
+        </ContactInfo>
+      </FormContainer>
+    </ContactHero>
   );
 }

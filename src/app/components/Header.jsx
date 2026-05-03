@@ -81,7 +81,7 @@ export function Header() {
           <NavLink to="/">Inicio</NavLink>
           <NavLink to="/nosotros">Nosotros</NavLink>
           <NavLink to="/sabores">Sabores</NavLink>
-          <NavLink to="/blog">Blog</NavLink>
+         
           <NavLink to="/contacto">Contacto</NavLink>
           
         </Nav>

@@ -1,42 +1,28 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
-import { ThemeProvider } from "styled-components";
+import React, { useRef } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import theme from "./theme";
 
 
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
-
-
 import { Home } from "./pages/Home";
 import { Nosotros } from "./pages/Nosotros";
 import { Contacto } from "./pages/Contacto";
 import { Sabores } from "./pages/Sabores";
 import { Domicilio } from "./pages/Domicilio";
 
-// --- Estilos Globales ---
 const GlobalStyle = createGlobalStyle`
-  *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-  }
-
+  *{ margin:0; padding:0; box-sizing:border-box; }
   body{
     font-family:${({ theme }) => theme.fonts.body};
     background:${({ theme }) => theme.colors.background};
     color:${({ theme }) => theme.colors.text};
   }
-
-  a{
-    text-decoration:none;
-    color:inherit;
-  }
-
-  button,input{
-    font-family:inherit;
-  }
+  a{ text-decoration:none; color:inherit; }
 `;
 
 const AppContainer = styled.div`
@@ -45,9 +31,22 @@ const AppContainer = styled.div`
   min-height: 100vh;
 `;
 
-const MainContent = styled.main`
-  flex-grow: 1; 
-`;
+
+const PageWrapper = ({ children }) => {
+  const containerRef = useRef();
+  const location = useLocation(); 
+
+  useGSAP(() => {
+    
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
+    );
+  }, [location.pathname]); 
+
+  return <div ref={containerRef}>{children}</div>;
+};
 
 export default function App() {
   return (
@@ -55,28 +54,22 @@ export default function App() {
       <Router>
         <GlobalStyle />
         <AppContainer>
-          
           <Header />
           
-          <MainContent>
-            <Routes>
+          <main style={{ flexGrow: 1 }}>
             
-              <Route path="/" element={<Home />} />
-              
-              {/* Ruta Nosotros */}
-              <Route path="/nosotros" element={<Nosotros />} />
-              <Route path="/contacto" element={<Contacto />} />
-              <Route path="/sabores" element={<Sabores />} />
-              <Route path="/domicilio" element={<Domicilio />} />
+            <PageWrapper>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/nosotros" element={<Nosotros />} />
+                <Route path="/contacto" element={<Contacto />} />
+                <Route path="/sabores" element={<Sabores />} />
+                <Route path="/domicilio" element={<Domicilio />} />
+                <Route path="*" element={<div style={{padding: '50px', textAlign: 'center'}}>Página no encontrada</div>} />
+              </Routes>
+            </PageWrapper>
+          </main>
 
-            
-              
-              
-              <Route path="*" element={<div style={{padding: '50px', textAlign: 'center'}}>Página no encontrada</div>} />
-            </Routes>
-          </MainContent>
-
-        
           <Footer />
         </AppContainer>
       </Router>
