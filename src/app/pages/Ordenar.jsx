@@ -16,7 +16,7 @@ const OrderCard = styled.div`
   grid-template-columns: 1fr;
   gap: 2rem;
   
-  /* SHADE BOX: Sombra profunda y elegante */
+ 
   box-shadow: 0 20px 40px rgba(0,0,0,0.08);
 
   @media (min-width: 768px) {
@@ -63,9 +63,9 @@ export function Ordenar() {
     <OrderPage>
       <h1>Finaliza tu pedido</h1>
       <OrderCard>
-        {/* Lado Izquierdo: Visualización */}
+       
         <div>
-          {/* Ahora usamos flavorImage */}
+          
           <img 
             src={flavorImage} 
             alt={flavorName} 
@@ -74,7 +74,7 @@ export function Ordenar() {
           <h2 style={{marginTop: '1rem'}}>{flavorName}</h2>
         </div>
 
-        {/* Lado Derecho: Configuración */}
+        
         <div>
           <h3>¿Cómo lo quieres disfrutar?</h3>
           <RadioGroup>

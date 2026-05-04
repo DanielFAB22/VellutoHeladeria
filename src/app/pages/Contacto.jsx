@@ -84,9 +84,9 @@ const ContactHero = styled.section`
 `;
 
 const FormContainer = styled.div`
-  /* EFECTO TRANSPARENTE (Glassmorphism) */
-  background: rgba(255, 255, 255, 0.15); // Blanco muy transparente
-  backdrop-filter: blur(15px); // Desenfoque del fondo
+
+  background: rgba(255, 255, 255, 0.15); 
+  backdrop-filter: blur(15px); 
   -webkit-backdrop-filter: blur(15px);
   
   width: 100%;
@@ -106,7 +106,7 @@ const SectionHeader = styled.div`
   h1 {
     font-family: ${({ theme }) => theme.fonts.title};
     font-size: 2.8rem;
-    color: white; // Texto blanco para que resalte sobre el cristal
+    color: white; 
     margin-bottom: 0.5rem;
     text-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
@@ -134,7 +134,7 @@ const FormGroup = styled.div`
   }
 
   input, textarea {
-    /* Inputs también semi-transparentes */
+    
     background: rgba(255, 255, 255, 0.9); 
     border: 1px solid transparent;
     padding: 1rem;

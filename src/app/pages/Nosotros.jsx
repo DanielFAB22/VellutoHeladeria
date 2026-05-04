@@ -7,7 +7,7 @@ const MainContent = styled.div`
   padding: 0 1rem;
 `;
 
-// Sección con imagen de fondo que ocupa gran espacio
+
 const HistoryHero = styled.section`
   width: 100%;
   height: 60vh;
@@ -16,7 +16,7 @@ const HistoryHero = styled.section`
     url(${heladero});
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; // Efecto Parallax suave
+  background-attachment: fixed; 
   display: flex;
   flex-direction: column;
   justify-content: center;

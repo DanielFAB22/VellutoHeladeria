@@ -113,13 +113,13 @@ export function Home() {
             modules={[Pagination, Autoplay, Navigation]}
             spaceBetween={30}
             slidesPerView={1}
-            loop={true} // <--- HACE QUE SEA INFINITO
+            loop={true} 
             autoplay={{ 
               delay: 3000, 
               disableOnInteraction: false 
             }}
             pagination={{ clickable: true }}
-            navigation={true} // <--- FLECHAS PARA NAVEGAR
+            navigation={true} 
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
@@ -143,7 +143,7 @@ export function Home() {
           <DeliverySection />
         </div>
         
-        {/* SECCIÓN POR QUÉ ELEGIRNOS */}
+        
         <div style={{ marginTop: '3.5rem', marginBottom: '4rem' }}>
           <SectionHeader>
             <h2>¿Por qué elegir Velluto?</h2>

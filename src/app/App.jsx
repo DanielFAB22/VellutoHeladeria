@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import theme from "./theme";
 
-
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -15,6 +14,7 @@ import { Contacto } from "./pages/Contacto";
 import { Sabores } from "./pages/Sabores";
 import { Domicilio } from "./pages/Domicilio";
 import { Ordenar } from "./pages/Ordenar";
+import { Chatbot } from "./components/Chatbot"; 
 
 const GlobalStyle = createGlobalStyle`
   *{ margin:0; padding:0; box-sizing:border-box; }
@@ -32,13 +32,11 @@ const AppContainer = styled.div`
   min-height: 100vh;
 `;
 
-
 const PageWrapper = ({ children }) => {
   const containerRef = useRef();
   const location = useLocation(); 
 
   useGSAP(() => {
-    
     gsap.fromTo(
       containerRef.current,
       { opacity: 0, y: 20 },
@@ -58,7 +56,6 @@ export default function App() {
           <Header />
           
           <main style={{ flexGrow: 1 }}>
-            
             <PageWrapper>
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -73,6 +70,10 @@ export default function App() {
           </main>
 
           <Footer />
+          
+          
+          <Chatbot /> 
+
         </AppContainer>
       </Router>
     </ThemeProvider>
