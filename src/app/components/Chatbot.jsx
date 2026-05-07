@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { askChatGpt } from "../../services/aiService.js";
 import { SABORES } from "../../data/sabores.js";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 const ChatContainer = styled.div`
   position: fixed;
@@ -40,13 +42,6 @@ const ChatHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  span {
-    font-size: 0.8rem;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 2px 8px;
-    border-radius: 10px;
-  }
 `;
 
 const MessageArea = styled.div`
@@ -57,14 +52,6 @@ const MessageArea = styled.div`
   flex-direction: column;
   gap: 12px;
   background-color: #fcfcfc;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #e0e0e0;
-    border-radius: 10px;
-  }
 `;
 
 const Bubble = styled.div`
@@ -73,8 +60,6 @@ const Bubble = styled.div`
   border-radius: 18px;
   font-size: 0.9rem;
   line-height: 1.4;
-  position: relative;
-
   background: ${props => props.$isUser ? props.theme.colors.primary : '#ffffff'};
   color: ${props => props.$isUser ? 'white' : props.theme.colors.text};
   align-self: ${props => props.$isUser ? 'flex-end' : 'flex-start'};
@@ -96,11 +81,6 @@ const StyledInput = styled.input`
   padding: 0.8rem;
   border-radius: 12px;
   outline: none;
-  font-family: inherit;
-
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
 `;
 
 const FloatingButton = styled.button`
@@ -115,13 +95,7 @@ const FloatingButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
-
-  &:hover {
-    transform: scale(1.1);
-    background: ${({ theme }) => theme.colors.dark};
-  }
 `;
 
 export function Chatbot() {
@@ -129,12 +103,34 @@ export function Chatbot() {
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([
-    { text: "¡Hola! Soy el asistente de Velluto 🍨. ¿Quieres que te recomiende un sabor según tu antojo?", sender: "bot" }
+    { text: "¡Hola! Soy el asistente de Velluto 🍨. ¿En qué puedo ayudarte?", sender: "bot" }
   ]);
 
   const scrollRef = useRef(null);
 
-  // Autoscroll al último mensaje
+  // Animación del botón flotante
+  useGSAP(() => {
+    gsap.to(".btn-float", {
+      y: -10,
+      repeat: -1,
+      yoyo: true,
+      duration: 1.5,
+      ease: "sine.inOut"
+    });
+  }, []);
+
+  // Animación de nuevos mensajes
+  useGSAP(() => {
+    if (messages.length > 1) {
+      gsap.from(".last-msg", {
+        opacity: 0,
+        x: 20,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    }
+  }, [messages]);
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -155,7 +151,7 @@ export function Chatbot() {
       const response = await askChatGpt(userText, SABORES);
       setMessages([...updatedMessages, { text: response, sender: "bot" }]);
     } catch (error) {
-      setMessages([...updatedMessages, { text: "Ups, se me congeló el cerebro. ¿Podrías repetir?", sender: "bot" }]);
+      setMessages([...updatedMessages, { text: "Error de conexión. Intenta de nuevo.", sender: "bot" }]);
     } finally {
       setLoading(false);
     }
@@ -164,27 +160,22 @@ export function Chatbot() {
   return (
     <ChatContainer>
       <ChatWindow $isOpen={isOpen}>
-        <ChatHeader>
-          Velluto AI ✨
-          <span>En línea</span>
-        </ChatHeader>
-        
+        <ChatHeader>Velluto AI ✨</ChatHeader>
         <MessageArea ref={scrollRef}>
           {messages.map((msg, index) => (
-            <Bubble key={index} $isUser={msg.sender === "user"}>
+            <Bubble 
+              key={index} 
+              $isUser={msg.sender === "user"}
+              className={index === messages.length - 1 ? "last-msg" : ""}
+            >
               {msg.text}
             </Bubble>
           ))}
-          {loading && (
-            <Bubble $isUser={false} style={{ opacity: 0.6 }}>
-              Escribiendo...
-            </Bubble>
-          )}
+          {loading && <Bubble $isUser={false} style={{opacity: 0.5}}>Escribiendo...</Bubble>}
         </MessageArea>
-
         <InputArea>
           <StyledInput 
-            placeholder="Escribe tu duda aquí..."
+            placeholder="Pregúntame algo..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
@@ -193,7 +184,7 @@ export function Chatbot() {
         </InputArea>
       </ChatWindow>
 
-      <FloatingButton onClick={() => setIsOpen(!isOpen)}>
+      <FloatingButton className="btn-float" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? "×" : "💬"}
       </FloatingButton>
     </ChatContainer>

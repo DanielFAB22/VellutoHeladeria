@@ -1,13 +1,10 @@
-// src/data/sabores.js
-
 export const SABORES = [
-  // 🍦 CLÁSICOS
   {
     id: "vainilla",
     name: "Vainilla Artesanal",
     category: "Clásicos",
     description: "Elaborado con vainas reales de vainilla para un sabor suave y elegante.",
-    price: 4.0,
+    price: 8500,
     image: "/sabores/vainilla.png"
   },
   {
@@ -15,7 +12,7 @@ export const SABORES = [
     name: "Chocolate Intenso",
     category: "Clásicos",
     description: "Chocolate oscuro con notas profundas y textura cremosa.",
-    price: 4.5,
+    price: 8500,
     image: "/sabores/chocolate.png"
   },
   {
@@ -23,17 +20,15 @@ export const SABORES = [
     name: "Fresa Natural",
     category: "Frutales",
     description: "Fresas frescas trituradas para un sabor auténtico y refrescante.",
-    price: 4.5,
+    price: 8500,
     image: "/sabores/fresa.png"
   },
-
-  // 🍪 CREMOSOS
   {
     id: "cookies",
     name: "Cookies & Cream",
     category: "Cremosos",
     description: "Base cremosa con trozos generosos de galleta crujiente.",
-    price: 4.5,
+    price: 9500,
     image: "/sabores/cookies.png"
   },
   {
@@ -41,7 +36,7 @@ export const SABORES = [
     name: "Caramelo Salado",
     category: "Cremosos",
     description: "Dulce de leche artesanal con un toque de sal marina.",
-    price: 4.8,
+    price: 9500,
     image: "/sabores/caramelo.png"
   },
   {
@@ -49,17 +44,16 @@ export const SABORES = [
     name: "Chocolate Avellana",
     category: "Cremosos",
     description: "Crema suave con avellanas tostadas y cacao.",
-    price: 4.8,
+    price: 9500,
     image: "/sabores/avellana.png"
   },
-
   // 🌿 PREMIUM
   {
     id: "pistacho",
     name: "Pistacho Tostado",
     category: "Premium",
     description: "Pistachos seleccionados con un sabor intenso y natural.",
-    price: 5.0,
+    price: 11500,
     image: "/sabores/pistacho.png"
   },
   {
@@ -67,7 +61,7 @@ export const SABORES = [
     name: "Café Espresso",
     category: "Premium",
     description: "Café de origen con notas profundas y ligeramente amargas.",
-    price: 4.8,
+    price: 10500,
     image: "/sabores/cafe.png"
   },
   {
@@ -75,17 +69,15 @@ export const SABORES = [
     name: "Cheesecake de Frutos Rojos",
     category: "Premium",
     description: "Crema tipo cheesecake con swirl de frutos rojos.",
-    price: 5.0,
-    image: "/sabores/cheesecake.png"
+    price: 11500,
+    image: "/sabores/cheesecakefrutos.png"
   },
-
-  // 🍍 FRUTALES
   {
     id: "mango",
     name: "Mango Tropical",
     category: "Frutales",
     description: "Mango maduro con textura suave y refrescante.",
-    price: 4.5,
+    price: 8500,
     image: "/sabores/mango.png"
   },
   {
@@ -93,71 +85,51 @@ export const SABORES = [
     name: "Frutos del Bosque",
     category: "Frutales",
     description: "Mezcla de mora, arándano y frambuesa.",
-    price: 4.8,
-    image: "/sabores/frutosrojos.png"
+    price: 9500,
+    image: "/sabores/frutos.png"
   }
 ];
 
 export const PRESENTACIONES = [
   { id: 'cono', name: 'Cono Artesanal', extra: 0 },
-  { id: 'sundae', name: 'Sundae Especial', extra: 2.50 },
-  { id: 'tarro', name: 'Tarro Familiar (1L)', extra: 10.00 }
+  { id: 'sundae', name: 'Sundae Especial', extra: 4500 },
+  { id: 'tarro', name: 'Tarro Familiar (1L)', extra: 32000 }
 ];
 
 export const BASES = [
   {
     id: 1,
     name: "Cono",
+    price: 0, 
     description: "Cono artesanal crocante"
   },
   {
     id: 2,
     name: "Vaso",
+    price: 0,
     description: "Vaso minimalista premium"
   },
   {
     id: 3,
     name: "Brownie",
+    price: 4500, 
     description: "Base tibia de brownie"
   },
   {
     id: 4,
     name: "Waffle Bowl",
+    price: 3000,
     description: "Canasta dulce de waffle"
   }
 ];
 
 export const TOPPINGS = [
-  {
-    id: 1,
-    name: "Chispas de chocolate"
-  },
-  {
-    id: 2,
-    name: "Oreo triturada"
-  },
-  {
-    id: 3,
-    name: "Caramelo"
-  },
-  {
-    id: 4,
-    name: "Fudge de chocolate"
-  },
-  {
-    id: 5,
-    name: "Fresas"
-  },
-  {
-    id: 6,
-    name: "Marshmallows"
-  },
-  {
-    id: 7,
-    name: "Maní crocante"
-  },
-  {
-    id: 8,
-    name: "Galleta"
-  }
+  { id: 1, name: "Chispas de chocolate", price: 1500 },
+  { id: 2, name: "Oreo triturada", price: 1500 },
+  { id: 3, name: "Caramelo", price: 1200 },
+  { id: 4, name: "Fudge de chocolate", price: 1200 },
+  { id: 5, name: "Fresas", price: 2000 },
+  { id: 6, name: "Marshmallows", price: 1200 },
+  { id: 7, name: "Maní crocante", price: 1500 },
+  { id: 8, name: "Galleta", price: 1500 }
 ];
