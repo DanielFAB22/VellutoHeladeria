@@ -17,29 +17,7 @@ const FilterSection = styled.div`
   gap: 1.5rem;
 `;
 
-const SearchInput = styled.input`
-  width: 100%;
-  max-width: 400px;
-  padding: 0.8rem 1.2rem;
-  border-radius: 50px;
-  border: 2px solid ${({ theme }) => theme.colors.border};
-  font-family: inherit;
-  font-size: 1rem;
-  outline: none;
-  transition: 0.3s;
 
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0 0 10px rgba(230, 126, 34, 0.1);
-  }
-`;
-
-const CategoryContainer = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
 
 const CategoryBtn = styled.button`
   padding: 0.5rem 1.2rem;
@@ -58,23 +36,55 @@ const CategoryBtn = styled.button`
 
 const FlavorsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+  margin-top: 2rem;
+`;
+
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+
+  img {
+    width: 100%;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+  }
+`;
+
+const OrderCTA = styled.div`
+  margin-top: 3rem;
+  text-align: center;
+`;
+
+const OrderButton = styled.button`
+  padding: 1rem 2rem;
+  border-radius: ${({ theme }) => theme.radius.md};
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
 `;
 
 export function Sabores() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [activeCategory, setActiveCategory] = useState("Todos");
 
-  const categorias = ["Todos", "Cremosos", "Frutales", "Clásicos", "Premium"];
-
-  // Lógica de filtrado combinada
-  const filteredFlavors = SABORES.filter(flavor => {
-    const matchesSearch = flavor.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = activeCategory === "Todos" || flavor.category === activeCategory;
-    return matchesSearch && matchesCategory;
-  });
-
+  const [selectedFlavor, setSelectedFlavor] = useState(null);
+  
   return (
     <PageWrapper>
       <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
@@ -82,44 +92,41 @@ export function Sabores() {
         <p>Explora nuestras creaciones artesanales</p>
       </div>
 
-      <FilterSection>
-        <SearchInput 
-          type="text" 
-          placeholder="Busca tu sabor favorito..." 
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+     
+
+    <FlavorsGrid>
+      {SABORES.map((flavor) => (
+        <FlavorCard
+          key={flavor.id}
+          name={flavor.name}
+          image={flavor.image}
+          onClick={() => setSelectedFlavor(flavor)}
         />
-        
-        <CategoryContainer>
-          {categorias.map(cat => (
-            <CategoryBtn 
-              key={cat} 
-              $active={activeCategory === cat}
-              onClick={() => setActiveCategory(cat)}
-            >
-              {cat}
-            </CategoryBtn>
-          ))}
-        </CategoryContainer>
-      </FilterSection>
+      ))}
+    </FlavorsGrid>
 
-      <FlavorsGrid>
-        {filteredFlavors.map((flavor) => (
-          <FlavorCard
-            key={flavor.id}
-            name={flavor.name}
-            description={flavor.description}
-            price={`$${flavor.price.toFixed(2)}`}
-            image={flavor.image}
-          />
-        ))}
-      </FlavorsGrid>
+    {selectedFlavor && (
+      <ModalOverlay onClick={() => setSelectedFlavor(null)}>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
+          
+          <img src={selectedFlavor.image} alt={selectedFlavor.name} />
 
-      {filteredFlavors.length === 0 && (
-        <div style={{ textAlign: 'center', marginTop: '3rem', opacity: 0.6 }}>
-          <p>No encontramos ningún sabor que coincida con tu búsqueda. 🍦</p>
-        </div>
-      )}
+          <h2>{selectedFlavor.name}</h2>
+          <p>{selectedFlavor.description}</p>
+          <strong>${selectedFlavor.price.toFixed(2)}</strong>
+
+        </ModalContent>
+      </ModalOverlay>
+    )}
+    
+
+    <OrderCTA>
+      <OrderButton onClick={() => navigate("/ordenar")}>
+        Armar mi helado
+      </OrderButton>
+    </OrderCTA>   
+
+      
     </PageWrapper>
   );
 }
