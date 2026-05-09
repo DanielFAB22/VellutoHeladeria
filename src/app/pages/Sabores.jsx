@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FlavorCard } from "../components/FlavorCard";
 import { SABORES } from "../../data/sabores.js";
-
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -66,56 +64,83 @@ const CategoryBtn = styled.button`
 
 const FlavorsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
   margin-top: 2rem;
 `;
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-`;
-
-const ModalContent = styled.div`
-  background: white;
-  padding: 2.5rem;
-  border-radius: 30px;
-  max-width: 450px;
-  width: 90%;
-  text-align: center;
+// --- TARJETA CON HOVER DE DESCRIPCIÓN ---
+const FlavorItemCard = styled.div`
   position: relative;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  height: 350px;
+  border-radius: 25px;
+  overflow: hidden;
+  background: white;
+  box-shadow: ${({ theme }) => theme.shadow.soft};
+  cursor: pointer;
 
-  img {
+  .image-container {
     width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 20px;
-    margin-bottom: 1.5rem;
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
   }
 
-  h2 { color: ${({ theme }) => theme.colors.primary}; margin-bottom: 1rem; }
-  p { line-height: 1.6; color: #555; margin-bottom: 1.5rem; }
-  .modal-price { font-size: 1.5rem; font-weight: 700; color: ${({ theme }) => theme.colors.dark}; }
-`;
+  .info-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    
+    h3 {
+      font-family: ${({ theme }) => theme.fonts.title};
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+      transform: translateY(20px);
+      transition: transform 0.4s ease;
+    }
 
-const CloseButton = styled.button`
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: #f0f0f0;
-  border: none;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-weight: bold;
+    p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      transform: translateY(20px);
+      transition: transform 0.4s ease 0.1s;
+    }
+
+    .price-tag {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: ${({ theme }) => theme.colors.primary};
+      transform: translateY(20px);
+      transition: transform 0.4s ease 0.2s;
+    }
+  }
+
+  &:hover {
+    .image-container img {
+      transform: scale(1.1);
+    }
+    .info-overlay {
+      opacity: 1;
+      h3, p, .price-tag {
+        transform: translateY(0);
+      }
+    }
+  }
 `;
 
 const OrderCTA = styled.div`
@@ -128,7 +153,6 @@ const OrderCTA = styled.div`
 
 export function Sabores() {
   const navigate = useNavigate();
-  const [selectedFlavor, setSelectedFlavor] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
 
@@ -140,29 +164,19 @@ export function Sabores() {
     return matchesSearch && matchesCategory;
   });
 
- 
+  // Animación de entrada de la lista
   useGSAP(() => {
-    gsap.fromTo(".flavor-item", 
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" }
+    gsap.fromTo(".flavor-item-anim", 
+      { opacity: 0, scale: 0.9 },
+      { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" }
     );
   }, [filteredFlavors]);
-
-  // Animación del Modal
-  useGSAP(() => {
-    if (selectedFlavor) {
-      gsap.fromTo(".modal-box",
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" }
-      );
-    }
-  }, [selectedFlavor]);
 
   return (
     <PageWrapper>
       <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <h1 style={{ fontSize: '3rem', fontWeight: '800' }}>Nuestro Menú</h1>
-        <p style={{ opacity: 0.7 }}>Descubre el arte del helado italiano</p>
+        <p style={{ opacity: 0.7, fontSize: '1.1rem' }}>Pasa el mouse sobre un sabor para conocer su historia</p>
       </div>
 
       <FilterSection>
@@ -187,29 +201,28 @@ export function Sabores() {
 
       <FlavorsGrid>
         {filteredFlavors.map((flavor) => (
-          <div key={flavor.id} className="flavor-item">
-            <FlavorCard
-              name={flavor.name}
-              image={flavor.image}
-              onShowDetails={() => setSelectedFlavor(flavor)}
-            />
+          <div key={flavor.id} className="flavor-item-anim">
+            <FlavorItemCard>
+              <div className="image-container">
+                <img src={flavor.image} alt={flavor.name} />
+              </div>
+              <div className="info-overlay">
+                <h3>{flavor.name}</h3>
+                <p>{flavor.description}</p>
+                <div className="price-tag">
+                    {new Intl.NumberFormat('es-CO', { 
+                        style: 'currency', 
+                        currency: 'COP', 
+                        maximumFractionDigits: 0 
+                    }).format(flavor.price)}
+                </div>
+              </div>
+            </FlavorItemCard>
           </div>
         ))}
       </FlavorsGrid>
 
-      {selectedFlavor && (
-        <ModalOverlay onClick={() => setSelectedFlavor(null)}>
-          <ModalContent className="modal-box" onClick={(e) => e.stopPropagation()}>
-            <CloseButton onClick={() => setSelectedFlavor(null)}>×</CloseButton>
-            <img src={selectedFlavor.image} alt={selectedFlavor.name} />
-            <h2>{selectedFlavor.name}</h2>
-            <p>{selectedFlavor.description}</p>
-            <div className="modal-price">${selectedFlavor.price.toFixed(2)}</div>
-          </ModalContent>
-        </ModalOverlay>
-      )}
-
-      <OrderCTA className="order-cta-box">
+      <OrderCTA>
         <h2 style={{ marginBottom: '1.5rem' }}>¿Quieres algo personalizado?</h2>
         <button 
           onClick={() => navigate("/ordenar")}
@@ -221,8 +234,11 @@ export function Sabores() {
             border: 'none',
             fontSize: '1.1rem',
             fontWeight: 'bold',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            transition: '0.3s'
           }}
+          onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+          onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
         >
           ¡Armar mi Helado!
         </button>

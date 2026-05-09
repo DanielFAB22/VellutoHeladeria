@@ -11,46 +11,70 @@ import { faPhone } from '@fortawesome/free-solid-svg-icons';
 const FooterContainer = styled.footer`
   background: ${({ theme }) => theme.colors.dark};
   color: white;
-  margin-top: 2rem; // Reducido de 4rem
+  margin-top: 2rem;
 `;
 
 const FooterWrapper = styled.div`
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2.5rem 2rem; // Compactado el padding vertical
+  padding: 2.5rem 2rem;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+ 
+  grid-template-columns: 1fr; 
+  gap: 2.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: start;
+  }
 `;
 
 const Brand = styled.div`
+  text-align: left;
   h2 {
     font-family: ${({ theme }) => theme.fonts.title};
-    margin-bottom: 0.5rem; // Reducido
+    margin-bottom: 0.5rem;
   }
   p {
     color: rgba(255,255,255,0.75);
     line-height: 1.6;
+    max-width: 300px;
   }
 `;
 
 const Contact = styled.div`
+ 
+  @media (min-width: 768px) {
+    text-align: center;
+    margin: 0 auto;
+  }
+
   h3 { margin-bottom: 0.8rem; }
   p {
-    margin: 0.4rem 0; // Más compacto
+    margin: 0.4rem 0;
     color: rgba(255,255,255,0.82);
   }
+`;
+
+const SocialSection = styled.div`
+ 
+  @media (min-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  h3 { margin-bottom: 0.8rem; }
 `;
 
 const SocialContainer = styled.div`
   display: flex;
   gap: 0.8rem;
-  margin-top: 0.5rem; // Sube los iconos acercándolos al título
 `;
 
 const SocialIcon = styled.a`
-  width: 38px; // Ligeramente más pequeños para elegancia
+  width: 38px;
   height: 38px;
   border-radius: 50%;
   background: rgba(255,255,255,0.08);
@@ -89,20 +113,20 @@ export function Footer() {
 
         <Contact>
           <h3>Contacto</h3>
-          <p><FontAwesomeIcon icon={faPhone} /> +57 300 123 4567</p>
+          <p><FontAwesomeIcon icon={faPhone} style={{ marginRight: '8px' }} /> +57 300 123 4567</p>
           <p>Neiva, Colombia</p>
           <p>Lunes a Domingo · 10AM - 10PM</p>
         </Contact>
 
-        <div>
-          <h3 style={{ marginBottom: '0.5rem' }}>Síguenos</h3>
+        <SocialSection>
+          <h3>Síguenos</h3>
           <SocialContainer>
-            <SocialIcon href="#"><FontAwesomeIcon icon={faInstagram} /></SocialIcon>
-            <SocialIcon href="#"><FontAwesomeIcon icon={faFacebookF} /></SocialIcon>
-            <SocialIcon href="#"><FontAwesomeIcon icon={faXTwitter} /></SocialIcon>
-            <SocialIcon href="#"><FontAwesomeIcon icon={faTiktok} /></SocialIcon>
+            <SocialIcon href="#" aria-label="Instagram"><FontAwesomeIcon icon={faInstagram} /></SocialIcon>
+            <SocialIcon href="#" aria-label="Facebook"><FontAwesomeIcon icon={faFacebookF} /></SocialIcon>
+            <SocialIcon href="#" aria-label="X"><FontAwesomeIcon icon={faXTwitter} /></SocialIcon>
+            <SocialIcon href="#" aria-label="Tiktok"><FontAwesomeIcon icon={faTiktok} /></SocialIcon>
           </SocialContainer>
-        </div>
+        </SocialSection>
       </FooterWrapper>
 
       <BottomBar>

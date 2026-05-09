@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react"; 
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import theme from "./theme";
@@ -14,6 +14,7 @@ import { Contacto } from "./pages/Contacto";
 import { Sabores } from "./pages/Sabores";
 import { Domicilio } from "./pages/Domicilio";
 import { Ordenar } from "./pages/Ordenar";
+import { Recibo } from "./pages/Recibo"; 
 import { Chatbot } from "./components/Chatbot"; 
 
 const GlobalStyle = createGlobalStyle`
@@ -48,6 +49,9 @@ const PageWrapper = ({ children }) => {
 };
 
 export default function App() {
+  
+  const [cart, setCart] = useState([]);
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -63,17 +67,20 @@ export default function App() {
                 <Route path="/contacto" element={<Contacto />} />
                 <Route path="/sabores" element={<Sabores />} />
                 <Route path="/domicilio" element={<Domicilio />} />
-                <Route path="/ordenar" element={<Ordenar />} />
+                
+               
+                <Route path="/ordenar" element={<Ordenar cart={cart} setCart={setCart} />} />
+                
+              
+                <Route path="/recibo" element={<Recibo cart={cart} setCart={setCart} />} />
+                
                 <Route path="*" element={<div style={{padding: '50px', textAlign: 'center'}}>Página no encontrada</div>} />
               </Routes>
             </PageWrapper>
           </main>
 
           <Footer />
-          
-          
           <Chatbot /> 
-
         </AppContainer>
       </Router>
     </ThemeProvider>

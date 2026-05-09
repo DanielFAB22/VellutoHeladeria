@@ -5,7 +5,17 @@ export const SABORES = [
     category: "Clásicos",
     description: "Elaborado con vainas reales de vainilla para un sabor suave y elegante.",
     price: 8500,
-    image: "/sabores/vainilla.png"
+    image: "/sabores/vainilla.png",
+    color: "#FFF9C4" // Amarillo crema suave
+  },
+  {
+    id: "pistacho",
+    name: "Pistacho",
+    category: "Clásicos",
+    description: "Helado artesanal con pistachos tostados directamente de Milan, Italia.",
+    price: 8500,
+    image: "/sabores/pistacho.png",
+    color: "#C5E1A5" // Verde pistacho
   },
   {
     id: "chocolate",
@@ -13,7 +23,8 @@ export const SABORES = [
     category: "Clásicos",
     description: "Chocolate oscuro con notas profundas y textura cremosa.",
     price: 8500,
-    image: "/sabores/chocolate.png"
+    image: "/sabores/chocolate.png",
+    color: "#4E342E" // Café oscuro profundo
   },
   {
     id: "fresa",
@@ -21,7 +32,8 @@ export const SABORES = [
     category: "Frutales",
     description: "Fresas frescas trituradas para un sabor auténtico y refrescante.",
     price: 8500,
-    image: "/sabores/fresa.png"
+    image: "/sabores/fresa.png",
+    color: "#FF8A80" // Rosa fresa
   },
   {
     id: "cookies",
@@ -29,7 +41,8 @@ export const SABORES = [
     category: "Cremosos",
     description: "Base cremosa con trozos generosos de galleta crujiente.",
     price: 9500,
-    image: "/sabores/cookies.png"
+    image: "/sabores/cookies.png",
+    color: "#E0E0E0" // Gris claro con textura (puedes usar blanco hueso)
   },
   {
     id: "caramelo",
@@ -37,7 +50,8 @@ export const SABORES = [
     category: "Cremosos",
     description: "Dulce de leche artesanal con un toque de sal marina.",
     price: 9500,
-    image: "/sabores/caramelo.png"
+    image: "/sabores/caramelo.png",
+    color: "#FFB74D" // Naranja caramelo
   },
   {
     id: "avellana",
@@ -45,32 +59,36 @@ export const SABORES = [
     category: "Cremosos",
     description: "Crema suave con avellanas tostadas y cacao.",
     price: 9500,
-    image: "/sabores/avellana.png"
+    image: "/sabores/avellana.png",
+    color: "#795548" // Marrón avellana
   },
   // 🌿 PREMIUM
   {
-    id: "pistacho",
-    name: "Pistacho Tostado",
+    id: "reeses",
+    name: "Reese's",
     category: "Premium",
-    description: "Pistachos seleccionados con un sabor intenso y natural.",
+    description: "Helado artesanal con piezas de Reese's.",
     price: 11500,
-    image: "/sabores/pistacho.png"
+    image: "/sabores/reeses.png",
+    color: "#FF9800" // Naranja intenso de la marca
   },
   {
     id: "cafe",
-    name: "Café Espresso",
+    name: "Juan Valdez",
     category: "Premium",
-    description: "Café de origen con notas profundas y ligeramente amargas.",
+    description: "Café de origen Colombiano con notas profundas y ligeramente amargas.",
     price: 10500,
-    image: "/sabores/cafe.png"
+    image: "/sabores/cafe.png",
+    color: "#6D4C41" // Café Juan Valdez
   },
   {
-    id: "cheesecake",
-    name: "Cheesecake de Frutos Rojos",
+    id: "milkyway",
+    name: "Milky Way",
     category: "Premium",
-    description: "Crema tipo cheesecake con swirl de frutos rojos.",
+    description: "Helado del dulce insignia: Milky Way.",
     price: 11500,
-    image: "/sabores/cheesecakefrutos.png"
+    image: "/sabores/milkyway.png",
+    color: "#3E2723" // Marrón chocolate leche
   },
   {
     id: "mango",
@@ -78,7 +96,8 @@ export const SABORES = [
     category: "Frutales",
     description: "Mango maduro con textura suave y refrescante.",
     price: 8500,
-    image: "/sabores/mango.png"
+    image: "/sabores/mango.png",
+    color: "#FFD54F" // Amarillo mango
   },
   {
     id: "frutos_rojos",
@@ -86,14 +105,9 @@ export const SABORES = [
     category: "Frutales",
     description: "Mezcla de mora, arándano y frambuesa.",
     price: 9500,
-    image: "/sabores/frutos.png"
+    image: "/sabores/frutos.png",
+    color: "#AD1457" // Púrpura/Magenta de frutos rojos
   }
-];
-
-export const PRESENTACIONES = [
-  { id: 'cono', name: 'Cono Artesanal', extra: 0 },
-  { id: 'sundae', name: 'Sundae Especial', extra: 4500 },
-  { id: 'tarro', name: 'Tarro Familiar (1L)', extra: 32000 }
 ];
 
 export const BASES = [
@@ -101,25 +115,29 @@ export const BASES = [
     id: 1,
     name: "Cono",
     price: 0, 
-    description: "Cono artesanal crocante"
+    description: "Cono artesanal crocante",
+    type: "wafer" // Para identificar la forma visual
   },
   {
     id: 2,
     name: "Vaso",
     price: 0,
-    description: "Vaso minimalista premium"
+    description: "Vaso minimalista premium",
+    type: "cup"
   },
   {
     id: 3,
     name: "Brownie",
     price: 4500, 
-    description: "Base tibia de brownie"
+    description: "Base tibia de brownie",
+    type: "cake"
   },
   {
     id: 4,
     name: "Waffle Bowl",
     price: 3000,
-    description: "Canasta dulce de waffle"
+    description: "Canasta dulce de waffle",
+    type: "bowl"
   }
 ];
 

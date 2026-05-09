@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { askChatGpt } from "../../services/aiService.js";
 import { SABORES } from "../../data/sabores.js";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+
+
 
 const ChatContainer = styled.div`
   position: fixed;
@@ -17,8 +18,8 @@ const ChatContainer = styled.div`
 `;
 
 const ChatWindow = styled.div`
-  width: 350px;
-  height: 500px;
+  width: 360px;
+  height: 520px;
   background: white;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -27,11 +28,6 @@ const ChatWindow = styled.div`
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.colors.border};
   margin-bottom: 15px;
-
-  @media (max-width: 480px) {
-    width: 90vw;
-    height: 70vh;
-  }
 `;
 
 const ChatHeader = styled.div`
@@ -55,7 +51,7 @@ const MessageArea = styled.div`
 `;
 
 const Bubble = styled.div`
-  max-width: 80%;
+  max-width: 85%;
   padding: 10px 14px;
   border-radius: 18px;
   font-size: 0.9rem;
@@ -65,22 +61,27 @@ const Bubble = styled.div`
   align-self: ${props => props.$isUser ? 'flex-end' : 'flex-start'};
   border: ${props => props.$isUser ? 'none' : `1px solid #eee`};
   box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+  white-space: pre-line;
 `;
 
-const InputArea = styled.div`
-  padding: 1rem;
-  border-top: 1px solid #eee;
+const SuggestionsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  background: white;
+  padding: 0 1.2rem 1rem 1.2rem;
+  background: #fcfcfc;
 `;
 
-const StyledInput = styled.input`
-  flex: 1;
-  border: 1px solid #eee;
-  padding: 0.8rem;
-  border-radius: 12px;
-  outline: none;
+const SuggestionButton = styled.button`
+  background: white;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover { background: ${({ theme }) => theme.colors.primary}; color: white; }
 `;
 
 const FloatingButton = styled.button`
@@ -92,96 +93,92 @@ const FloatingButton = styled.button`
   border-radius: 50%;
   cursor: pointer;
   font-size: 1.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
 `;
 
+
+
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([
-    { text: "¡Hola! Soy el asistente de Velluto 🍨. ¿En qué puedo ayudarte?", sender: "bot" }
+    { text: "¡Hola! Bienvenido a Velluto 🍨. Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?", sender: "bot" }
   ]);
 
   const scrollRef = useRef(null);
 
-  // Animación del botón flotante
-  useGSAP(() => {
-    gsap.to(".btn-float", {
-      y: -10,
-      repeat: -1,
-      yoyo: true,
-      duration: 1.5,
-      ease: "sine.inOut"
-    });
-  }, []);
+  
+  const RESPUESTAS_DEFAULT = {
+    "menu": () => {
+      let menu = "🍦 *Nuestros Sabores Artesanales* 🍦\n\n";
+      SABORES.forEach(s => menu += `• ${s.name}: $${s.price.toLocaleString()}\n`);
+      menu += "\n¿Cuál te gustaría probar?";
+      return menu;
+    },
+    "ubicacion": "📍 Estamos ubicados en Neiva, Huila. ¡Cerca de la Universidad Surcolombiana!",
+    "horarios": "🕒 Atendemos todos los días:\nLunes a Sábado: 10:00 AM - 9:00 PM\nDomingos: 11:00 AM - 8:00 PM",
+    "domicilio": "🛵 ¡Sí! Hacemos domicilios en toda la ciudad. Puedes armar tu pedido en la sección 'Ordenar'.",
+    "default": "No estoy seguro de entender eso, pero puedes usar los botones de arriba para conocer más sobre nosotros. ✨"
+  };
 
-  // Animación de nuevos mensajes
-  useGSAP(() => {
-    if (messages.length > 1) {
-      gsap.from(".last-msg", {
-        opacity: 0,
-        x: 20,
-        duration: 0.3,
-        ease: "power2.out"
-      });
-    }
-  }, [messages]);
+  const BOTONES_SUGERENCIA = [
+    { label: "🍦 Ver Menú", key: "menu" },
+    { label: "📍 Ubicación", key: "ubicacion" },
+    { label: "🕒 Horarios", key: "horarios" },
+    { label: "🛵 Domicilios", key: "domicilio" }
+  ];
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, loading]);
+  }, [messages]);
 
-  const handleSend = async () => {
-    if (!inputValue.trim() || loading) return;
+  const procesarAccion = (key, label) => {
+    const textoUsuario = label;
+    let respuestaBot = "";
 
-    const userText = inputValue;
-    setInputValue("");
-    const updatedMessages = [...messages, { text: userText, sender: "user" }];
-    setMessages(updatedMessages);
     
-    setLoading(true);
-
-    try {
-      const response = await askChatGpt(userText, SABORES);
-      setMessages([...updatedMessages, { text: response, sender: "bot" }]);
-    } catch (error) {
-      setMessages([...updatedMessages, { text: "Error de conexión. Intenta de nuevo.", sender: "bot" }]);
-    } finally {
-      setLoading(false);
+    if (typeof RESPUESTAS_DEFAULT[key] === "function") {
+      respuestaBot = RESPUESTAS_DEFAULT[key]();
+    } else {
+      respuestaBot = RESPUESTAS_DEFAULT[key] || RESPUESTAS_DEFAULT["default"];
     }
+
+    setMessages(prev => [
+      ...prev,
+      { text: textoUsuario, sender: "user" },
+      { text: respuestaBot, sender: "bot" }
+    ]);
   };
+
+  useGSAP(() => {
+    gsap.to(".btn-float", { y: -10, repeat: -1, yoyo: true, duration: 1.5, ease: "sine.inOut" });
+  }, []);
 
   return (
     <ChatContainer>
       <ChatWindow $isOpen={isOpen}>
-        <ChatHeader>Velluto AI ✨</ChatHeader>
+        <ChatHeader>
+          <span>Velluto Asistente ✨</span>
+          <span style={{ cursor: 'pointer' }} onClick={() => setIsOpen(false)}>×</span>
+        </ChatHeader>
+
         <MessageArea ref={scrollRef}>
           {messages.map((msg, index) => (
-            <Bubble 
-              key={index} 
-              $isUser={msg.sender === "user"}
-              className={index === messages.length - 1 ? "last-msg" : ""}
-            >
+            <Bubble key={index} $isUser={msg.sender === "user"}>
               {msg.text}
             </Bubble>
           ))}
-          {loading && <Bubble $isUser={false} style={{opacity: 0.5}}>Escribiendo...</Bubble>}
         </MessageArea>
-        <InputArea>
-          <StyledInput 
-            placeholder="Pregúntame algo..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            disabled={loading}
-          />
-        </InputArea>
+
+        <SuggestionsWrapper>
+          <p style={{ width: '100%', fontSize: '0.75rem', opacity: 0.6, marginBottom: '5px' }}>Selecciona una opción:</p>
+          {BOTONES_SUGERENCIA.map((btn, i) => (
+            <SuggestionButton key={i} onClick={() => procesarAccion(btn.key, btn.label)}>
+              {btn.label}
+            </SuggestionButton>
+          ))}
+        </SuggestionsWrapper>
       </ChatWindow>
 
       <FloatingButton className="btn-float" onClick={() => setIsOpen(!isOpen)}>

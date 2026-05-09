@@ -36,7 +36,7 @@ const RadioOption = styled.label`
   transition: 0.2s;
 
   input {
-    appearance: none; // Ocultamos el radio default
+    appearance: none; 
     width: 18px;
     height: 18px;
     border: 2px solid white;
@@ -94,7 +94,7 @@ const FormContainer = styled.div`
   padding: 3rem;
   border-radius: 30px;
   
-  /* Borde sutil para definir la forma sobre el fondo */
+ 
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 `;
@@ -200,7 +200,7 @@ export function Contacto() {
             <input type="text" placeholder="Ej: Juan Pérez" required />
           </FormGroup>
 
-          {/* --- NUEVO RADIO GROUP --- */}
+         
           <RadioSection>
             <label className="main-label">Motivo del contacto</label>
             <RadioGroupContainer>
