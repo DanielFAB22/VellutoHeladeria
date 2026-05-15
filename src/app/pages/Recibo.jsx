@@ -1,49 +1,88 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const ReceiptContainer = styled.div`
-  max-width: 500px;
-  margin: 4rem auto;
+
+const PrintStyles = createGlobalStyle`
+  @media print {
+   
+    body * {
+      visibility: hidden;
+    }
+    #print-section, #print-section * {
+      visibility: visible;
+    }
+    #print-section {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+   
+    @page {
+      margin: 0;
+      size: auto;
+    }
+  }
+`;
+
+const PageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #fdfbf9;
   padding: 2rem;
+`;
+
+const ReceiptContainer = styled.div`
+  max-width: 450px;
+  width: 100%;
+  padding: 3rem 2rem;
   background: white;
-  border-radius: 8px;
+  border-radius: 4px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
   position: relative;
   font-family: 'Courier New', Courier, monospace;
+  border: 1px solid #eee;
 
-  /* Efecto de borde dentado de recibo */
-  &::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background: linear-gradient(-45deg, white 5px, transparent 0), linear-gradient(45deg, white 5px, transparent 0);
-    background-size: 10px 10px;
+  @media print {
+    box-shadow: none;
+    border: none;
+    max-width: 100%;
+    padding: 1rem;
   }
 `;
 
 const TicketHeader = styled.div`
   text-align: center;
-  border-bottom: 2px dashed #eee;
+  border-bottom: 2px dashed #333;
   padding-bottom: 1.5rem;
   margin-bottom: 1.5rem;
-  h2 { font-family: ${({ theme }) => theme.fonts.title}; font-size: 2rem; margin-bottom: 0.5rem; }
-  p { font-size: 0.9rem; opacity: 0.7; }
+  h2 { font-size: 2.2rem; margin-bottom: 0.3rem; text-transform: uppercase; }
+  p { font-size: 0.85rem; line-height: 1.4; }
 `;
 
 const Item = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.9rem;
   
   .details {
-    max-width: 70%;
-    span { display: block; font-size: 0.8rem; color: #666; margin-top: 2px; }
+    max-width: 75%;
+    span { display: block; font-size: 0.75rem; color: #444; margin-top: 3px; }
   }
+`;
+
+const FeeRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
 `;
 
 const TotalDivider = styled.div`
@@ -53,81 +92,111 @@ const TotalDivider = styled.div`
   display: flex;
   justify-content: space-between;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 `;
 
 const Actions = styled.div`
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.8rem;
+
+  @media print {
+    display: none;
+  }
 `;
 
 const Button = styled.button`
-  padding: 1rem;
+  padding: 1.1rem;
   border: none;
   border-radius: 12px;
-  font-weight: bold;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
   transition: 0.3s;
-  background: ${({ $primary, theme }) => $primary ? theme.colors.primary : "#f5f5f5"};
-  color: ${({ $primary }) => $primary ? "white" : "#333"};
+  background: ${({ $primary, theme }) => $primary ? theme.colors.primary : "#2c3e50"};
+  color: white;
   
-  &:hover { opacity: 0.9; transform: translateY(-2px); }
+  &:hover { filter: brightness(1.2); transform: translateY(-2px); }
 `;
 
 export function Recibo({ cart, setCart }) {
   const navigate = useNavigate();
-  const total = cart.reduce((acc, item) => acc + item.finalPrice, 0);
+  
+  const ENVIO = 5000;
+  const subtotal = cart.reduce((acc, item) => acc + item.finalPrice, 0);
+  const totalGeneral = subtotal + ENVIO;
 
   const handleFinish = () => {
-    setCart([]); // Limpiar carrito al finalizar
+    setCart([]);
     navigate("/");
   };
 
   if (cart.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: '100px' }}>
-        <h3>No hay pedidos activos</h3>
-        <Button onClick={() => navigate("/ordenar")} $primary>Ir a ordenar</Button>
-      </div>
+      <PageWrapper>
+        <div style={{ textAlign: 'center' }}>
+          <h3>No hay pedidos activos</h3>
+          <Button onClick={() => navigate("/ordenar")} $primary>Ir a ordenar</Button>
+        </div>
+      </PageWrapper>
     );
   }
 
   return (
-    <ReceiptContainer>
-      <TicketHeader>
-        <h2>Velluto</h2>
-        <p>Gelatería Artesanal</p>
-        <p>Neiva, Huila</p>
-        <p>{new Date().toLocaleDateString()} | {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-      </TicketHeader>
+    <>
+      <PrintStyles />
+      <PageWrapper>
+        <ReceiptContainer id="print-section">
+          <TicketHeader>
+            <h2>Velluto</h2>
+            <p>Gelatería Artesanal</p>
+            <p>Neiva, Huila</p>
+            <p>{new Date().toLocaleDateString()} | {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+          </TicketHeader>
 
-      {cart.map((item, idx) => (
-        <Item key={idx}>
-          <div className="details">
-            <strong>1x Helado en {item.base}</strong>
-            <span>Sabores: {item.flavors.join(", ")}</span>
-            {item.toppings.length > 0 && <span>Toppings: {item.toppings.map(t => t.name).join(", ")}</span>}
+          {cart.map((item, idx) => (
+            <Item key={idx}>
+              <div className="details">
+                <strong>1x Helado en {item.base}</strong>
+                <span>Sabores: {item.flavors.join(", ")}</span>
+                {item.toppings?.length > 0 && (
+                  <span>Toppings: {item.toppings.map(t => t.name).join(", ")}</span>
+                )}
+              </div>
+              <span>${item.finalPrice.toLocaleString()}</span>
+            </Item>
+          ))}
+
+          <div style={{ borderTop: '1px dashed #eee', marginTop: '1rem', paddingTop: '1rem' }}>
+            <FeeRow>
+              <span>Subtotal</span>
+              <span>${subtotal.toLocaleString()}</span>
+            </FeeRow>
+            <FeeRow>
+              <span>Servicio de Envío</span>
+              <span>${ENVIO.toLocaleString()}</span>
+            </FeeRow>
           </div>
-          <span>${item.finalPrice.toLocaleString()}</span>
-        </Item>
-      ))}
 
-      <TotalDivider>
-        <span>TOTAL</span>
-        <span>${total.toLocaleString()}</span>
-      </TotalDivider>
+          <TotalDivider>
+            <span>TOTAL</span>
+            <span>${totalGeneral.toLocaleString()}</span>
+          </TotalDivider>
 
-      <div style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.8rem', opacity: 0.6 }}>
-        <p>Orden #VE-{Math.floor(1000 + Math.random() * 9000)}</p>
-        <p>¡Gracias por elegir lo artesanal!</p>
-      </div>
+          <div style={{ textAlign: 'center', marginTop: '2.5rem', fontSize: '0.75rem', lineHeight: '1.6' }}>
+            <p style={{ fontWeight: 'bold' }}>Orden #VE-{Math.floor(1000 + Math.random() * 9000)}</p>
+            <p>Este recibo es un comprobante de tu pedido artesanal.</p>
+            <p>¡Vuelve pronto!</p>
+          </div>
 
-      <Actions>
-        <Button onClick={() => window.print()}>Imprimir Recibo</Button>
-        <Button $primary onClick={handleFinish}>Nueva Orden</Button>
-      </Actions>
-    </ReceiptContainer>
+          <Actions>
+            <Button onClick={() => window.print()}>Imprimir Ticket</Button>
+            <Button $primary onClick={handleFinish}>Finalizar y Nueva Orden</Button>
+          </Actions>
+        </ReceiptContainer>
+      </PageWrapper>
+    </>
   );
 }

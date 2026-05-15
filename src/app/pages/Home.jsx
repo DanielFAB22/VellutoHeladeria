@@ -5,26 +5,20 @@ import { Hero } from "../components/Hero";
 import { FlavorCard } from "../components/FlavorCard";
 import { SABORES } from "../../data/sabores.js";
 
-
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-
 
 import imgNatural from "../../assets/porqueelegirnos/vanilla.jpg";
 import imgArtesanal from "../../assets/porqueelegirnos/vanilla2.jpg";
 import imgSabores from "../../assets/porqueelegirnos/helados1.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
-
-
 
 const MainContent = styled.div`
   padding: 1rem;
@@ -37,106 +31,108 @@ const MainContent = styled.div`
 
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   opacity: 0;
 
   h2 {
     font-family: ${({ theme }) => theme.fonts.title};
-    font-size: 2.6rem;
+    font-size: 2.8rem;
     margin-bottom: 0.8rem;
     color: ${({ theme }) => theme.colors.text};
+    letter-spacing: -1px;
   }
 
   p {
-    color: ${({ theme }) => theme.colors.dark};
+    color: #7f8c8d;
     max-width: 620px;
     margin: 0 auto;
     line-height: 1.7;
+    font-size: 1.1rem;
   }
 `;
 
+
 const SwiperWrapper = styled.div`
   position: relative;
- 
   margin: 0 auto; 
   width: 100%;
 
   .swiper {
-    overflow: visible !important; 
-    cursor: grab;
-    
-    &:active {
-      cursor: grabbing;
-    }
+    padding: 1rem 1rem 4rem 1rem !important;
+    overflow: hidden !important; 
   }
 
  
-  .swiper-pagination {
-    bottom: 0px !important;
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    
+   
+    img {
+      aspect-ratio: 1 / 1; 
+      object-fit: cover;
+      border-radius: 20px; 
+      width: 100%;
+      max-width: 280px; 
+      margin: 0 auto;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    }
   }
 
   .swiper-pagination-bullet {
-    width: 10px;
-    height: 10px;
-    background: #ccc;
-    opacity: 0.5;
-    transition: all 0.3s ease;
+    width: 8px;
+    height: 8px;
+    background: #2c3e50;
+    opacity: 0.2;
   }
 
   .swiper-pagination-bullet-active {
     background: ${({ theme }) => theme.colors.primary};
     opacity: 1;
-    width: 25px;
-    border-radius: 5px;
-  }
-
-  @media (max-width: 768px) {
-    .swiper {
-      overflow: hidden !important; 
-    }
+    width: 20px;
+    border-radius: 4px;
   }
 `;
 
 const ContactCTA = styled.section`
-  background: ${({ theme }) => theme.colors.secondary || '#fdf2e9'};
-  border-radius: 40px;
+  background: #fffcf9; 
+  border-radius: 45px;
   padding: 5rem 2rem;
   text-align: center;
-  margin: 4rem 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  box-shadow: ${({ theme }) => theme.shadow.soft};
+  margin: 6rem 0;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.02);
 
   h2 {
     font-family: ${({ theme }) => theme.fonts.title};
-    font-size: 3rem;
-    color: ${({ theme }) => theme.colors.text};
+    font-size: 3.2rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
   }
 
   p {
-    font-size: 1.2rem;
-    max-width: 500px;
-    color: ${({ theme }) => theme.colors.dark};
-    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    max-width: 550px;
+    color: #7f8c8d;
+    margin-bottom: 2rem;
   }
 
   button {
     background: ${({ theme }) => theme.colors.primary};
     color: white;
     border: none;
-    padding: 1.2rem 3rem;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    font-weight: 700;
+    padding: 1.2rem 3.5rem;
+    border-radius: 100px;
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     &:hover {
-      transform: scale(1.05);
-      filter: brightness(1.1);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 15px 30px rgba(230, 126, 34, 0.3);
     }
   }
 `;
@@ -144,7 +140,7 @@ const ContactCTA = styled.section`
 const WhyUsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 2rem;
   @media (min-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -152,45 +148,40 @@ const WhyUsGrid = styled.div`
 
 const InfoCard = styled.div`
   position: relative;
-  height: 280px;
-  border-radius: 22px;
+  height: 320px;
+  border-radius: 30px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 2rem;
+  justify-content: flex-end; 
+  padding: 2.5rem;
   color: white;
-  box-shadow: ${({ theme }) => theme.shadow.soft};
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  transition: all 0.4s ease;
   opacity: 0;
+  border: 1px solid rgba(255,255,255,0.1);
 
-  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), 
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent), 
     url(${props => props.$bgImage});
   background-size: cover;
   background-position: center;
 
   &:hover {
-    transform: translateY(-10px) scale(1.02);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), 
-      url(${props => props.$bgImage});
+    transform: translateY(-10px);
+    &::after { opacity: 1; }
   }
 
   h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
     font-family: ${({ theme }) => theme.fonts.title};
     z-index: 2;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
   }
 
   p {
-    color: rgba(255, 255, 255, 0.95);
-    line-height: 1.5;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.4;
     z-index: 2;
-    font-weight: 500;
   }
 `;
 
@@ -203,7 +194,7 @@ export function Home() {
       gsap.to(header, {
         scrollTrigger: { trigger: header, start: "top 85%" },
         opacity: 1,
-        y: -20,
+        y: -10,
         duration: 1,
         ease: "power3.out"
       });
@@ -212,17 +203,9 @@ export function Home() {
     gsap.to(".info-card", {
       scrollTrigger: { trigger: ".why-us-section", start: "top 75%" },
       opacity: 1,
-      y: -20,
+      y: 0,
       duration: 0.8,
       stagger: 0.2,
-      ease: "back.out(1.4)"
-    });
-
-    gsap.from(".contact-anim", {
-      scrollTrigger: { trigger: ".contact-anim", start: "top 85%" },
-      scale: 0.9,
-      opacity: 0,
-      duration: 1,
       ease: "power2.out"
     });
   }, []);
@@ -231,28 +214,25 @@ export function Home() {
     <>
       <Hero />
       <MainContent>
-        <div style={{ marginTop: '3rem' }}>
+        <div style={{ marginTop: '5rem' }}>
           <SectionHeader className="reveal-header">
             <h2>Sabores Destacados</h2>
-            <p>Nuestros favoritos de la temporada, listos para refrescar tu día.</p>
+            <p>Una selección artesanal de nuestras creaciones más queridas.</p>
           </SectionHeader>
           
           <SwiperWrapper>
             <Swiper
-              Quitamos Navigation de aquí
               modules={[Pagination, Autoplay]}
-              spaceBetween={25}
+              spaceBetween={30}
               slidesPerView={1}
               loop={true} 
-              autoplay={{ delay: 3500, disableOnInteraction: false }}
+              autoplay={{ delay: 4000, disableOnInteraction: false }}
               pagination={{ clickable: true }}
-              Aseguramos que el grabCursor esté activo para el control invisible
               grabCursor={true}
               breakpoints={{
-                640: { slidesPerView: 2 },
+                768: { slidesPerView: 2 },
                 1024: { slidesPerView: 3 },
               }}
-              style={{ padding: '1.5rem 0 4rem 0' }}
             >
               {destacados.map((flavor) => (
                 <SwiperSlide key={flavor.id}>
@@ -269,31 +249,31 @@ export function Home() {
         </div>
 
         <ContactCTA className="contact-anim">
-          <h2>¿Tienes alguna duda?</h2>
-          <p>Estamos aquí para ayudarte a elegir el sabor perfecto o resolver tus inquietudes sobre Velluto.</p>
+          <h2>¿Antojo de algo especial?</h2>
+          <p>Estamos listos para llevar la experiencia Velluto a tu puerta o resolver cualquier duda.</p>
           <button onClick={() => navigate("/contacto")}>
-            Contactar ahora
+            Escríbenos
           </button>
         </ContactCTA>
         
-        <div className="why-us-section" style={{ marginBottom: '4rem' }}>
+        <div className="why-us-section" style={{ marginBottom: '6rem' }}>
           <SectionHeader className="reveal-header">
-            <h2>¿Por qué elegir Velluto?</h2>
-            <p>Creamos helados con ingredientes reales y recetas cuidadas.</p>
+            <h2>Experiencia Velluto</h2>
+            <p>Lo que nos hace diferentes en cada cucharada.</p>
           </SectionHeader>
 
           <WhyUsGrid>
             <InfoCard className="info-card" $bgImage={imgNatural}>
-              <h3>Ingredientes Naturales</h3>
-              <p>Seleccionamos materias primas frescas para lograr sabor auténtico.</p>
+              <h3>Natural</h3>
+              <p>Sin colorantes artificiales, solo fruta y cremas reales.</p>
             </InfoCard>
             <InfoCard className="info-card" $bgImage={imgArtesanal}>
-              <h3>Recetas Artesanales</h3>
-              <p>Cada lote se prepara con atención al detalle y procesos de calidad.</p>
+              <h3>Artesanal</h3>
+              <p>Procesos lentos para una textura inigualable.</p>
             </InfoCard>
             <InfoCard className="info-card" $bgImage={imgSabores}>
-              <h3>Sabores Memorables</h3>
-              <p>Combinaciones clásicas y creativas pensadas para sorprender.</p>
+              <h3>Único</h3>
+              <p>Sabores exclusivos desarrollados en nuestro taller.</p>
             </InfoCard>
           </WhyUsGrid>
         </div>
