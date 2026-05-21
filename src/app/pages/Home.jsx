@@ -95,44 +95,52 @@ const SwiperWrapper = styled.div`
 `;
 
 const ContactCTA = styled.section`
-  background: #fffcf9; 
-  border-radius: 45px;
-  padding: 5rem 2rem;
+  background: white;
+  border-radius: 40px;
+  padding: 6rem 2rem;
   text-align: center;
-  margin: 6rem 0;
-  border: 1px solid rgba(0,0,0,0.03);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+  margin: 6rem auto;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 
   h2 {
     font-family: ${({ theme }) => theme.fonts.title};
-    font-size: 3.2rem;
+    font-size: 4rem;
     color: #2c3e50;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
   }
 
   p {
-    font-size: 1.1rem;
-    max-width: 550px;
+    font-size: 1.2rem;
+    max-width: 600px;
     color: #7f8c8d;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   button {
-    background: ${({ theme }) => theme.colors.primary};
+    background: #cd855f;
     color: white;
     border: none;
-    padding: 1.2rem 3.5rem;
-    border-radius: 100px;
-    font-size: 1rem;
-    font-weight: 800;
+    padding: 1rem 3.5rem;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s ease;
 
     &:hover {
-      transform: scale(1.05) translateY(-3px);
-      box-shadow: 0 15px 30px rgba(230, 126, 34, 0.3);
+      background: #b56e4a;
+      transform: scale(1.03);
     }
   }
 `;
